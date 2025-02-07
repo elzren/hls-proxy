@@ -3,7 +3,8 @@ import axios from "axios";
 
 export const proxy = async (req: Request, res: Response) => {
     try {
-        const proxyUrl = `${req.protocol}://${req.get('host')}`
+        const host = req.get('host')
+        const proxyUrl = `${host?.includes(':') ? 'http' : 'https'}://${host}`
         const url = req.query.url as string
         const baseUrl = new URL(url)
         const basePath = `${baseUrl.protocol}//${baseUrl.host}${baseUrl.pathname.substring(0, baseUrl.pathname.lastIndexOf('/') + 1)}`;
